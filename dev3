@@ -1,0 +1,33 @@
+#!/usr/bin/perl
+#
+# Device Search and exclude
+#
+
+use strict;
+use warnings;
+
+my $cmd = "";
+my $i = 1;
+
+if ($#ARGV > -1) {
+
+ $cmd = "grep -i $ARGV[0] /etc/hosts";
+ while ($i <= $#ARGV) {
+   if (substr($ARGV[$i],0,1) eq "-") {
+       my $temp = substr($ARGV[$i],1);
+       $cmd = $cmd . " \| grep -vi $temp";
+   }
+   else {
+       $cmd = $cmd . " \| grep -i $ARGV[$i]";
+   }
+   $i = $i + 1;
+ }
+ print "\nCommand Issued:  $cmd \n\n";
+ system("$cmd");
+ print "\n\n";
+}
+else {
+ print "\n Usage:  command search1 search2 -exclude_search1 -exclude_search2 ...
+\n";
+ exit
+}
